@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Cors;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin.Cors;
 using Owin;
 
 namespace Life.Server.Host.ConsoleApp
@@ -10,6 +11,10 @@ namespace Life.Server.Host.ConsoleApp
     {
         public static IAppBuilder AddSignalRNetwork(this IAppBuilder appBuilder)
         {
+            //GlobalHost.DependencyResolver.Register(
+            //    typeof(MainHub),
+            //    () => new MainHub(new ChatMessageRepository()));
+
             appBuilder.UseCors(CorsOptions.AllowAll);
             appBuilder.MapSignalR();
             return appBuilder;

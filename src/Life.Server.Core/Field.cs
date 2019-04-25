@@ -1,16 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Life.Client.Forms
+namespace Life.Server.Core
 {
     public class Field
     {
-        public int Height { get; set; }
-        public int Width { get; set; }
+        public int Height { get; }
+        public int Width { get; }
 
         public bool[,] Map { get; set; }
+
+        public Field(int height, int width)
+        {
+            Height = height;
+            Width = width;
+            Map = new bool[Height, Width];
+            Map[0, 1] = true;
+            Map[1, 2] = true;
+            Map[2, 0] = true;
+            Map[2, 1] = true;
+            Map[2, 2] = true;
+        }
 
         public override string ToString()
         {
@@ -28,10 +38,5 @@ namespace Life.Client.Forms
 
             return result.ToString();
         }
-    }
-
-    public class Game
-    {
-        public Field Field { get; set; }
     }
 }

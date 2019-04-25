@@ -2,6 +2,6 @@
 {
     public interface IClient
     {
-        void SendField(string message);
+        void SendField(string field);
     }
 }

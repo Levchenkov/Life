@@ -1,12 +1,38 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json;
 
 namespace Life.Server.Host.ConsoleApp
 {
     public class MainHub : Hub<IClient>
     {
-        public void GetField()
+        public void Connect()
         {
-            Clients.Caller.SendField("Hello");
+            GameHostHolder.Connect(Context.ConnectionId);
+            Task.Run(async () =>
+            {
+                while (GameHostHolder.IsClientConnected(Context.ConnectionId))
+                {
+                    var serializedField = JsonConvert.SerializeObject(GameHostHolder.Host.Game.Field);
+                    Clients.Caller.SendField(serializedField);
+                    Console.WriteLine($"{DateTime.Now} SendField {serializedField.Length * 2} bytes to {Context.ConnectionId}");
+                    await Task.Delay(10);
+                }
+            });
+        }
+
+        public void Disconnect()
+        {
+            Console.WriteLine("Soft Disconnected");
+            GameHostHolder.Disconnect(Context.ConnectionId);
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            Console.WriteLine("Hard Disconnected");
+            GameHostHolder.Disconnect(Context.ConnectionId);
+            return base.OnDisconnected(stopCalled);
         }
     }
 }

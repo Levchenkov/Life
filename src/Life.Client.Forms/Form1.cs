@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Life.Client.Network.SignalR;
+using Newtonsoft.Json;
 
 namespace Life.Client.Forms
 {
@@ -12,49 +14,35 @@ namespace Life.Client.Forms
         private int fieldStartLine = 25;
         private int cellSize = 20;
         private Timer drawTimer;
-        private Timer updateTime;
         private Game game;
-        private GameManager gameManager;
         private ServerConnection serverConnection;
         public Form1()
         {
             InitializeComponent();
 
             CreateDrawTimer();
-            CreateUpdateTimer();
 
             InitCore();
+            Task.Run(Connect);
+            //Connect().ConfigureAwait(true).GetAwaiter().GetResult();
         }
 
         private void InitCore()
         {
-            var fieldManager = new FieldManager();
-            var gameBuilder = new GameBuilder(fieldManager);
-            game = gameBuilder.Build();
-
-            gameManager = new GameManager(fieldManager);
+            var height = 20;
+            var width = 30;
+            game = new Game
+            {
+                Field = new Field { Height = height, Width = width, Map = new bool[height, width] }
+            };
         }
 
         private void CreateDrawTimer()
         {
             drawTimer = new Timer();
-            drawTimer.Interval = 10;
+            drawTimer.Interval = 100;
             drawTimer.Tick += DrawTimer;
             drawTimer.Start();
-        }
-
-        private void CreateUpdateTimer()
-        {
-            updateTime = new Timer();
-            updateTime.Interval = 10;
-            updateTime.Tick += UpdateTimer;
-            updateTime.Start();
-        }
-
-        private void UpdateTimer(object sender, EventArgs eventArgs)
-        {
-            ShowCmd();
-            gameManager.Update(game);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -135,32 +123,38 @@ namespace Life.Client.Forms
 
         private async void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            await Connect();
+        }
+
+        private async Task Connect()
+        {
             if (serverConnection == null)
             {
                 serverConnection = new ServerConnection("http://localhost:8088");
+                await serverConnection.OpenAsync();
+                serverConnection.OnReceive<string>("SendField", message =>
+                {
+                    var field = JsonConvert.DeserializeObject<Field>(message);
+                    game.Field = field;
+                    ShowCmd();
+                });
             }
 
-            await serverConnection.OpenAsync();
+            await serverConnection.Send("Connect");
             toolStripStatusLabel4.Text = "Connected";
-
-            serverConnection.OnReceive<string>("SendField", message =>
-            {
-                toolStripStatusLabel4.Text = $"Connected. Message: {message}";
-            });
         }
 
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            serverConnection?.Close();
+            await serverConnection.Send("Disconnect");
             toolStripStatusLabel4.Text = "Disconnected";
         }
 
-        private async void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        protected override async void OnClosed(EventArgs e)
         {
-            if (serverConnection != null)
-            {
-                await serverConnection.Send("GetField");
-            }
+            await serverConnection.Send("Disconnect");
+            serverConnection.Close();
+            base.OnClosed(e);
         }
     }
 }

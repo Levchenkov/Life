@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life.Client.Network.SignalR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life.Server.Host.SignalR", "Life.Server.Host.SignalR\Life.Server.Host.SignalR.csproj", "{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life.Server.Core", "Life.Server.Core\Life.Server.Core.csproj", "{1A6BFF7D-B87C-4463-911F-B58E6DEA8473}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6BFF7D-B87C-4463-911F-B58E6DEA8473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6BFF7D-B87C-4463-911F-B58E6DEA8473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6BFF7D-B87C-4463-911F-B58E6DEA8473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6BFF7D-B87C-4463-911F-B58E6DEA8473}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
