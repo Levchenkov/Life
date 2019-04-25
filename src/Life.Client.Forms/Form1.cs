@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Life.Client.Network.SignalR;
 
 namespace Life.Client.Forms
 {
@@ -14,6 +15,7 @@ namespace Life.Client.Forms
         private Timer updateTime;
         private Game game;
         private GameManager gameManager;
+        private ServerConnection serverConnection;
         public Form1()
         {
             InitializeComponent();
@@ -36,7 +38,7 @@ namespace Life.Client.Forms
         private void CreateDrawTimer()
         {
             drawTimer = new Timer();
-            drawTimer.Interval = 100;
+            drawTimer.Interval = 10;
             drawTimer.Tick += DrawTimer;
             drawTimer.Start();
         }
@@ -44,7 +46,7 @@ namespace Life.Client.Forms
         private void CreateUpdateTimer()
         {
             updateTime = new Timer();
-            updateTime.Interval = 100;
+            updateTime.Interval = 10;
             updateTime.Tick += UpdateTimer;
             updateTime.Start();
         }
@@ -128,6 +130,36 @@ namespace Life.Client.Forms
                 {
                     graphics.DrawLine(pen, j * cellSize, fieldStartLine, j * cellSize, fieldStartLine + game.Field.Height * cellSize);
                 }
+            }
+        }
+
+        private async void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (serverConnection == null)
+            {
+                serverConnection = new ServerConnection("http://localhost:8088");
+            }
+
+            await serverConnection.OpenAsync();
+            toolStripStatusLabel4.Text = "Connected";
+
+            serverConnection.OnReceive<string>("SendField", message =>
+            {
+                toolStripStatusLabel4.Text = $"Connected. Message: {message}";
+            });
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverConnection?.Close();
+            toolStripStatusLabel4.Text = "Disconnected";
+        }
+
+        private async void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (serverConnection != null)
+            {
+                await serverConnection.Send("GetField");
             }
         }
     }

@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life.Client.Forms", "Life.Client.Forms\Life.Client.Forms.csproj", "{C31CF0EA-C611-466B-A457-2D979011C5DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life.Client.Network.SignalR", "Life.Client.Network.SignalR\Life.Client.Network.SignalR.csproj", "{29BB4441-CA1D-4D49-A5D8-EE5A38F5B4F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life.Server.Host.SignalR", "Life.Server.Host.SignalR\Life.Server.Host.SignalR.csproj", "{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C31CF0EA-C611-466B-A457-2D979011C5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C31CF0EA-C611-466B-A457-2D979011C5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C31CF0EA-C611-466B-A457-2D979011C5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29BB4441-CA1D-4D49-A5D8-EE5A38F5B4F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29BB4441-CA1D-4D49-A5D8-EE5A38F5B4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29BB4441-CA1D-4D49-A5D8-EE5A38F5B4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29BB4441-CA1D-4D49-A5D8-EE5A38F5B4F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED09664-5CE6-4DCE-BA76-DA4B4D7208A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

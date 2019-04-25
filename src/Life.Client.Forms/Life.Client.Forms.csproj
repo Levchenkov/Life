@@ -80,5 +80,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Life.Client.Network.SignalR\Life.Client.Network.SignalR.csproj">
+      <Project>{29bb4441-ca1d-4d49-a5d8-ee5a38f5b4f8}</Project>
+      <Name>Life.Client.Network.SignalR</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
