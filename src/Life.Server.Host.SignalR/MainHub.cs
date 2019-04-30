@@ -9,6 +9,7 @@ namespace Life.Server.Host.ConsoleApp
     {
         public void Connect()
         {
+            Console.WriteLine("Connected");
             GameHostHolder.Connect(Context.ConnectionId);
             Task.Run(async () =>
             {
@@ -16,8 +17,8 @@ namespace Life.Server.Host.ConsoleApp
                 {
                     var serializedField = JsonConvert.SerializeObject(GameHostHolder.Host.Game.Field);
                     Clients.Caller.SendField(serializedField);
-                    Console.WriteLine($"{DateTime.Now} SendField {serializedField.Length * 2} bytes to {Context.ConnectionId}");
-                    await Task.Delay(10);
+                    //Console.WriteLine($"{DateTime.Now} SendField {serializedField.Length * 2} bytes to {Context.ConnectionId}");
+                    await Task.Delay(20);
                 }
             });
         }
