@@ -25,7 +25,7 @@ namespace Life.Server.Host.ConsoleApp
 
         public void GetField()
         {
-            GameHostHolder.CommandQueue.Enqueue(new GetFieldCommand(Clients.Caller));
+            GameHostHolder.CommandQueue.Enqueue(new GetFieldCommand(Context.ConnectionId, Clients.Caller));
         }
 
         public void Disconnect()

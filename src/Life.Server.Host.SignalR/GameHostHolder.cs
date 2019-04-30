@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.AspNet.SignalR.Messaging;
 using Newtonsoft.Json;
@@ -31,6 +32,11 @@ namespace Life.Server.Host.ConsoleApp
                 {
                     host = new GameHost();
                 }
+
+                if (CommandQueue == null)
+                {
+                    CommandQueue = new ConcurrentQueue<ICommand>();
+                }
             }
         }
 
@@ -59,7 +65,7 @@ namespace Life.Server.Host.ConsoleApp
             return Clients.ContainsKey(clientId) && Clients[clientId].IsConnected;
         }
 
-        public static Queue<ICommand> CommandQueue = new Queue<ICommand>();
+        public static ConcurrentQueue<ICommand> CommandQueue;
     }
 
     public interface ICommand
@@ -70,16 +76,21 @@ namespace Life.Server.Host.ConsoleApp
     public struct GetFieldCommand : ICommand
     {
         private readonly IClient client;
+        private readonly string connectionId;
 
-        public GetFieldCommand(IClient client)
+        public GetFieldCommand(string connectionId, IClient client)
         {
+            this.connectionId = connectionId;
             this.client = client;
         }
 
         public void Execute()
         {
-            var serializedField = JsonConvert.SerializeObject(GameHostHolder.Host.Game.Field);
-            client.SendField(serializedField);
+            if (GameHostHolder.IsClientConnected(connectionId))
+            {
+                var serializedField = JsonConvert.SerializeObject(GameHostHolder.Host.Game.Field);
+                client.SendField(serializedField);
+            }
         }
     }
 }

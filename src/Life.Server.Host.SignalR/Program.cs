@@ -32,6 +32,7 @@ namespace Life.Server.Host.ConsoleApp
                 {
                     GameHostHolder.Host.GameManager.Update(GameHostHolder.Host.Game);
                     await Task.Delay(50);
+                    
                 }
             });
 
@@ -41,11 +42,15 @@ namespace Life.Server.Host.ConsoleApp
                 {
                     if (GameHostHolder.CommandQueue.Count > 0)
                     {
-                        var command = GameHostHolder.CommandQueue.Dequeue();
-                        command.Execute();
+                        if (GameHostHolder.CommandQueue.TryDequeue(out var command))
+                        {
+                            command.Execute();
+                            //Console.WriteLine("Queue:" + GameHostHolder.CommandQueue.Count);
+                        }
                     }
                     else
                     {
+                        Console.WriteLine("Wait");
                         await Task.Delay(50);
                     }
                 }

@@ -22,7 +22,7 @@ namespace Life.Client.Forms
         {
             InitializeComponent();
 
-            //CreateDrawTimer();
+            CreateDrawTimer();
             CreateUpdateTimer();
 
             InitCore();
@@ -42,7 +42,7 @@ namespace Life.Client.Forms
         private void CreateDrawTimer()
         {
             drawTimer = new Timer();
-            drawTimer.Interval = 1000;
+            drawTimer.Interval = 50;
             drawTimer.Tick += DrawTimer;
             drawTimer.Start();
         }
@@ -50,7 +50,7 @@ namespace Life.Client.Forms
         private void CreateUpdateTimer()
         {
             updateTimer = new Timer();
-            updateTimer.Interval = 100;
+            updateTimer.Interval = 20;
             updateTimer.Tick += UpdateTimer;
             updateTimer.Start();
         }
@@ -77,7 +77,7 @@ namespace Life.Client.Forms
         {
             ShowFps();
             ShowSize();
-            //Refresh();
+            Refresh();
         }
 
 
@@ -154,9 +154,9 @@ namespace Life.Client.Forms
                 await serverConnection.OpenAsync();
                 serverConnection.OnReceive<string>("SendField", message =>
                 {
-                    //var field = JsonConvert.DeserializeObject<Field>(message);
-                    //game.Field = field;
-                    //ShowCmd();
+                    var field = JsonConvert.DeserializeObject<Field>(message);
+                    game.Field = field;
+                    ShowCmd();
                 });
             }
 

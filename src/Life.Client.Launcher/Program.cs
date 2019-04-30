@@ -13,14 +13,14 @@ namespace Life.Client.Launcher
     {
         static async Task Main(string[] args)
         {
-            var count = 100;
+            var count = 200;
 
             for (int j = 0; j < count; j++)
             {
-                StartClientForms();
-                //await StartNativeClient();
+                //StartClientForms();
+                await StartNativeClient();
                 Console.WriteLine($"Started {j}");
-                Thread.Sleep(500);
+                Thread.Sleep(100);
             }
 
             Console.ReadLine();
@@ -44,7 +44,7 @@ namespace Life.Client.Launcher
 
             await serverConnection.Send("Connect");
 
-            await Task.Run(async () =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
