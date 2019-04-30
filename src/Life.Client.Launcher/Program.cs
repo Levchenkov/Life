@@ -17,7 +17,8 @@ namespace Life.Client.Launcher
 
             for (int j = 0; j < count; j++)
             {
-                await StartNativeClient();
+                StartClientForms();
+                //await StartNativeClient();
                 Console.WriteLine($"Started {j}");
                 Thread.Sleep(500);
             }
@@ -42,6 +43,15 @@ namespace Life.Client.Launcher
             });
 
             await serverConnection.Send("Connect");
+
+            await Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await serverConnection.Send("GetField");
+                    await Task.Delay(50);
+                }
+            });
         }
     }
 }

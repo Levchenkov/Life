@@ -34,6 +34,22 @@ namespace Life.Server.Host.ConsoleApp
                     await Task.Delay(50);
                 }
             });
+
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    if (GameHostHolder.CommandQueue.Count > 0)
+                    {
+                        var command = GameHostHolder.CommandQueue.Dequeue();
+                        command.Execute();
+                    }
+                    else
+                    {
+                        await Task.Delay(50);
+                    }
+                }
+            });
         }
     }
 }

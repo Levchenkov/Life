@@ -14,13 +14,16 @@ namespace Life.Client.Forms
         private int fieldStartLine = 25;
         private int cellSize = 20;
         private Timer drawTimer;
+        private Timer updateTimer;
         private Game game;
         private ServerConnection serverConnection;
+        private bool isConnected;
         public Form1()
         {
             InitializeComponent();
 
             //CreateDrawTimer();
+            CreateUpdateTimer();
 
             InitCore();
             Task.Run(Connect);
@@ -44,6 +47,22 @@ namespace Life.Client.Forms
             drawTimer.Start();
         }
 
+        private void CreateUpdateTimer()
+        {
+            updateTimer = new Timer();
+            updateTimer.Interval = 100;
+            updateTimer.Tick += UpdateTimer;
+            updateTimer.Start();
+        }
+
+        private async void UpdateTimer(object sender, EventArgs e)
+        {
+            if (isConnected)
+            {
+                await serverConnection.Send("GetField");
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -60,6 +79,8 @@ namespace Life.Client.Forms
             ShowSize();
             //Refresh();
         }
+
+
 
         private void ShowFps()
         {
@@ -141,6 +162,7 @@ namespace Life.Client.Forms
 
             await serverConnection.Send("Connect");
             toolStripStatusLabel4.Text = "Connected";
+            isConnected = true;
         }
 
         private async void disconnectToolStripMenuItem_Click(object sender, EventArgs e)

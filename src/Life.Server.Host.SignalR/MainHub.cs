@@ -11,16 +11,21 @@ namespace Life.Server.Host.ConsoleApp
         {
             Console.WriteLine("Connected");
             GameHostHolder.Connect(Context.ConnectionId);
-            Task.Run(async () =>
-            {
-                while (GameHostHolder.IsClientConnected(Context.ConnectionId))
-                {
-                    var serializedField = JsonConvert.SerializeObject(GameHostHolder.Host.Game.Field);
-                    Clients.Caller.SendField(serializedField);
-                    //Console.WriteLine($"{DateTime.Now} SendField {serializedField.Length * 2} bytes to {Context.ConnectionId}");
-                    await Task.Delay(20);
-                }
-            });
+            //Task.Run(async () =>
+            //{
+            //    while (GameHostHolder.IsClientConnected(Context.ConnectionId))
+            //    {
+            //        var serializedField = JsonConvert.SerializeObject(GameHostHolder.Host.Game.Field);
+            //        Clients.Caller.SendField(serializedField);
+            //        //Console.WriteLine($"{DateTime.Now} SendField {serializedField.Length * 2} bytes to {Context.ConnectionId}");
+            //        await Task.Delay(20);
+            //    }
+            //});
+        }
+
+        public void GetField()
+        {
+            GameHostHolder.CommandQueue.Enqueue(new GetFieldCommand(Clients.Caller));
         }
 
         public void Disconnect()
